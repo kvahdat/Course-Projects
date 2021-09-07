@@ -1,0 +1,861 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Exam 2</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-18"><meta name="DC.source" content="Exam2S19_KimiaVahdat.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Exam 2</h1><!--introduction--><p>Kimia Vahdat 200262784</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Question 1</a></li><li><a href="#2">Reading data</a></li><li><a href="#3">Create MILP model</a></li><li><a href="#4">Display contraint matrix</a></li><li><a href="#5">Solve using Gurobi</a></li><li><a href="#6">Report results</a></li><li><a href="#7">Question 2- First Approach</a></li><li><a href="#8">Get road network</a></li><li><a href="#9">Label type of road</a></li><li><a href="#10">Plot roads</a></li><li><a href="#11">Add connector roads from cities to road network</a></li><li><a href="#12">Convert road distances to travel times (needs to be after ADDCONNECTOR)</a></li><li><a href="#13">Shortest time routes</a></li><li><a href="#14">Distance of shortest time route</a></li><li><a href="#15">Adding constraint</a></li><li><a href="#16">Construct &amp; improve routes:</a></li><li><a href="#17">Add any single-shipment routes</a></li><li><a href="#18">Plot Routes</a></li><li><a href="#19">Route time, packages, distance</a></li><li><a href="#20">Display route output structure</a></li><li><a href="#21">Gant chart</a></li><li><a href="#22">Question 2-Second Approach</a></li><li><a href="#23">Adding constraint</a></li><li><a href="#24">Construct &amp; improve routes:</a></li><li><a href="#25">Add any single-shipment routes</a></li><li><a href="#26">Plot Routes</a></li><li><a href="#27">Route time, packages, distance</a></li><li><a href="#28">Display route output structure</a></li><li><a href="#29">Gant chart</a></li></ul></div><h2 id="1">Question 1</h2><h2 id="2">Reading data</h2><pre class="codeinput">fn=<span class="string">'Exam2DataS19.xlsx'</span>;
+Prod = table2struct(readtable(fn,<span class="string">'sheet'</span>,<span class="string">'P1-Data'</span>));
+<span class="comment">% need to fit  regression model to get fixed cost and variable cost of</span>
+<span class="comment">% production</span>
+x = [Prod.Production]'; <span class="comment">% ton/week</span>
+y = [Prod.Costs]'*1000; <span class="comment">% $/week</span>
+yest = @(x,p) p(1) + p(2)*x;
+fh = @(p) sum((y - yest(x,p)).^2);
+ab = fminsearch(fh,[0 1])
+k = ab(1) <span class="comment">% fixed cost of production (only happens if we have production in a period)</span>
+Cp = ab(2) <span class="comment">% variable cost of production</span>
+plot(x,y,<span class="string">'r.'</span>)
+hold <span class="string">on</span>, fplot(@(x) yest(x,ab),[0 max(x)],<span class="string">'k-'</span>), hold <span class="string">off</span>
+Dem=table2struct(readtable(fn,<span class="string">'sheet'</span>,<span class="string">'P1-Demand'</span>));
+D=[Dem.Demand]'; <span class="comment">% demand ton/week</span>
+h = 0.05/(12*4)+0.06/(12*4)+0.5/4;
+Ci = cumsum(Cp,1)*h;      <span class="comment">% inventory cost of product 1 for stage 1 ($/ton)</span>
+K=60; <span class="comment">% Production capacity ton/week</span>
+yinit = 13;           <span class="comment">% initial inventory (ton)</span>
+ycap=120;           <span class="comment">% incentory capacity</span>
+yfinal = 13;     <span class="comment">% final inventory (ton)</span>
+T=13; <span class="comment">% number of periods</span>
+</pre><pre class="codeoutput">
+ab =
+
+   1.0e+04 *
+
+    5.8812    0.0798
+
+
+k =
+
+   5.8812e+04
+
+
+Cp =
+
+  798.4160
+
+</pre><img vspace="5" hspace="5" src="Exam2S19_KimiaVahdat_01.png" alt=""> <h2 id="3">Create MILP model</h2><pre class="codeinput">Cp = reshape(repmat(Cp,[T 1]),1,T)     <span class="comment">% create 1 x T array</span>
+Ci = reshape(repmat(Ci,[T+1 1]),1,T+1) <span class="comment">% create 1 x (T+1) array</span>
+Ci(:,1) = 0   <span class="comment">% intital inventory cost already accounted for last period</span>
+k = reshape(repmat(k,[T 1]),1,T)     <span class="comment">% create 1 x T  array</span>
+mp = Milp(<span class="string">'PPlan'</span>);
+mp.addobj(<span class="string">'min'</span>,Cp,Ci,k)
+   <span class="keyword">for</span> t = 1:T
+      mp.addcstr({t},{[1 -1],{[t t+1]}},0,<span class="string">'='</span>,D(t))
+      mp.addcstr({t},0,<span class="string">'&lt;='</span>,{K,{t}})
+   <span class="keyword">end</span>
+mp.addlb(0,horzcat(yinit,zeros(1,T-1),yfinal),0)
+mp.addub(Inf,horzcat(yinit,repmat(ycap,1,T-1),yfinal),1)
+mp.addctype(<span class="string">'C'</span>,<span class="string">'C'</span>,<span class="string">'B'</span>)
+</pre><pre class="codeoutput">
+Cp =
+
+  Columns 1 through 7
+
+  798.4160  798.4160  798.4160  798.4160  798.4160  798.4160  798.4160
+
+  Columns 8 through 13
+
+  798.4160  798.4160  798.4160  798.4160  798.4160  798.4160
+
+
+Ci =
+
+  Columns 1 through 7
+
+  101.6317  101.6317  101.6317  101.6317  101.6317  101.6317  101.6317
+
+  Columns 8 through 14
+
+  101.6317  101.6317  101.6317  101.6317  101.6317  101.6317  101.6317
+
+
+Ci =
+
+  Columns 1 through 7
+
+         0  101.6317  101.6317  101.6317  101.6317  101.6317  101.6317
+
+  Columns 8 through 14
+
+  101.6317  101.6317  101.6317  101.6317  101.6317  101.6317  101.6317
+
+
+k =
+
+   1.0e+04 *
+
+  Columns 1 through 7
+
+    5.8812    5.8812    5.8812    5.8812    5.8812    5.8812    5.8812
+
+  Columns 8 through 13
+
+    5.8812    5.8812    5.8812    5.8812    5.8812    5.8812
+
+</pre><h2 id="4">Display contraint matrix</h2><pre class="codeinput">spy(mp.Model.A),shg
+</pre><img vspace="5" hspace="5" src="Exam2S19_KimiaVahdat_02.png" alt=""> <h2 id="5">Solve using Gurobi</h2><pre class="codeinput">clear <span class="string">params</span>
+model = mp.milp2gb
+params.outputflag = 1;
+result = gurobi(model, params);
+x = mp.namesolution(result.x)
+TC = result.objval
+</pre><pre class="codeoutput">
+model = 
+
+  struct with fields:
+
+          name: 'PPlan'
+    modelsense: 'minimize'
+           obj: [40&times;1 double]
+            lb: [40&times;1 double]
+            ub: [40&times;1 double]
+         vtype: 'CCCCCCCCCCCCCCCCCCCCCCCCCCCBBBBBBBBBBBBB'
+             A: [26&times;40 double]
+         sense: [26&times;1 char]
+           rhs: [26&times;1 double]
+
+Optimize a model with 26 rows, 40 columns and 65 nonzeros
+Variable types: 27 continuous, 13 integer (13 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 6e+01]
+  Objective range  [1e-08, 6e+04]
+  Bounds range     [1e+00, 1e+02]
+  RHS range        [3e+01, 5e+01]
+Found heuristic solution: objective 1208014.9758
+Presolve removed 5 rows and 9 columns
+Presolve time: 0.00s
+Presolved: 21 rows, 31 columns, 51 nonzeros
+Variable types: 21 continuous, 10 integer (10 binary)
+
+Root relaxation: objective 9.956716e+05, 26 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 995671.600    0    8 1208014.98 995671.600  17.6%     -    0s
+H    0     0                    1159365.8430 995671.600  14.1%     -    0s
+H    0     0                    1050684.8270 995671.600  5.24%     -    0s
+H    0     0                    1047940.7711 995671.600  4.99%     -    0s
+     0     0 1009380.28    0    7 1047940.77 1009380.28  3.68%     -    0s
+     0     0 1013558.78    0    2 1047940.77 1013558.78  3.28%     -    0s
+     0     0 1013558.78    0    2 1047940.77 1013558.78  3.28%     -    0s
+     0     0 1017384.67    0    1 1047940.77 1017384.67  2.92%     -    0s
+     0     0 1017384.67    0    4 1047940.77 1017384.67  2.92%     -    0s
+     0     2 1017384.67    0    4 1047940.77 1017384.67  2.92%     -    0s
+*   77     0               6    1047534.2443 1042960.82  0.44%   1.8    0s
+
+Cutting planes:
+  Cover: 2
+  Implied bound: 1
+  Clique: 1
+  MIR: 2
+  Flow cover: 6
+  Flow path: 1
+
+Explored 79 nodes (184 simplex iterations) in 0.03 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 5: 1.04753e+06 1.04794e+06 1.05068e+06 ... 1.20801e+06
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.047534244255e+06, best bound 1.047534244255e+06, gap 0.0000%
+
+x = 
+
+  struct with fields:
+
+    Cp: [38 53 43.0000 60 60 0 60 0 60 60 0 59 60]
+    Ci: [13 0 0 1.0000 16.0000 27 2.0000 37 6 18 50 0 6 13]
+     k: [1 1 1 1 1 0 1 0 1 1 0 1 1]
+
+
+TC =
+
+   1.0475e+06
+
+</pre><h2 id="6">Report results</h2><pre class="codeinput">Fp = x.Cp; mdisp(Fp)
+Fi = x.Ci; mdisp(Fi)
+Fk= x.k; mdisp(Fk)
+D=D';
+mdisp(D)
+</pre><pre class="codeoutput"> 
+Fp:   1   2   3   4   5   6   7   8   9  10  11  12  13
+--:----------------------------------------------------
+ 1:  38  53  43  60  60   0  60   0  60  60   0  59  60
+ 
+Fi:   1   2   3   4   5   6   7   8   9  10  11  12  13  14
+--:--------------------------------------------------------
+ 1:  13   0   0   1  16  27   2  37   6  18  50   0   6  13
+ 
+Fk:   1   2   3   4   5   6   7   8   9  10  11  12  13
+--:----------------------------------------------------
+ 1:   1   1   1   1   1   0   1  -0   1   1  -0   1   1
+ 
+D:   1   2   3   4   5   6   7   8   9  10  11  12  13
+-:----------------------------------------------------
+1:  51  53  42  45  49  25  25  31  48  28  50  53  53
+</pre><h2 id="7">Question 2- First Approach</h2><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+fn=<span class="string">'Exam2DataS19.xlsx'</span>;
+DC= table2struct(readtable(fn,<span class="string">'sheet'</span>,<span class="string">'P2-DC'</span>));
+Cust=table2struct(readtable(fn,<span class="string">'sheet'</span>,<span class="string">'P2-Customers'</span>));
+DC_XY=[DC.Lon,DC.Lat];
+C_XY=[Cust.Lon; Cust.Lat]';
+q=[Cust.Pkg];
+XY=[DC_XY;C_XY];
+b=1; e=[2:size(XY,1)];
+tr=struct(<span class="string">'b'</span>,b,<span class="string">'e'</span>,b,<span class="string">'Kwt'</span>,40);
+sh = vec2struct(<span class="string">'b'</span>,b,<span class="string">'e'</span>,e,<span class="string">'q'</span>,q,<span class="string">'tU'</span>,2/60);
+sdisp(sh)
+</pre><pre class="codeoutput"> 
+sh:  b   e  q    tU  
+--:------------------
+ 1:  1   2  3  0.0333
+ 2:  1   3  3  0.0333
+ 3:  1   4  3  0.0333
+ 4:  1   5  2  0.0333
+ 5:  1   6  2  0.0333
+ 6:  1   7  2  0.0333
+ 7:  1   8  1  0.0333
+ 8:  1   9  2  0.0333
+ 9:  1  10  2  0.0333
+10:  1  11  2  0.0333
+11:  1  12  1  0.0333
+12:  1  13  2  0.0333
+13:  1  14  2  0.0333
+14:  1  15  1  0.0333
+15:  1  16  2  0.0333
+16:  1  17  2  0.0333
+17:  1  18  3  0.0333
+18:  1  19  1  0.0333
+19:  1  20  1  0.0333
+20:  1  21  1  0.0333
+21:  1  22  3  0.0333
+22:  1  23  3  0.0333
+23:  1  24  1  0.0333
+24:  1  25  5  0.0333
+25:  1  26  2  0.0333
+26:  1  27  3  0.0333
+27:  1  28  2  0.0333
+28:  1  29  5  0.0333
+29:  1  30  2  0.0333
+30:  1  31  1  0.0333
+31:  1  32  2  0.0333
+32:  1  33  1  0.0333
+33:  1  34  1  0.0333
+34:  1  35  1  0.0333
+35:  1  36  1  0.0333
+36:  1  37  2  0.0333
+37:  1  38  1  0.0333
+38:  1  39  1  0.0333
+39:  1  40  3  0.0333
+40:  1  41  2  0.0333
+41:  1  42  2  0.0333
+42:  1  43  2  0.0333
+43:  1  44  3  0.0333
+44:  1  45  2  0.0333
+45:  1  46  2  0.0333
+46:  1  47  1  0.0333
+47:  1  48  3  0.0333
+48:  1  49  2  0.0333
+49:  1  50  1  0.0333
+50:  1  51  1  0.0333
+</pre><h2 id="8">Get road network</h2><pre class="codeinput">expansionAroundXY = 0.1;
+[XY2,IJD,isXY,isIJD] = subgraph(usrdnode(<span class="string">'XY'</span>),<span class="keyword">...</span>
+   isinrect(usrdnode(<span class="string">'XY'</span>),boundrect(XY,expansionAroundXY)),<span class="keyword">...</span>
+   usrdlink(<span class="string">'IJD'</span>));
+</pre><h2 id="9">Label type of road</h2><pre class="codeinput">s = usrdlink(isIJD);
+isI = s.Type == <span class="string">'I'</span>;         <span class="comment">% Interstate highways</span>
+isIR = isI &amp; s.Urban == <span class="string">' '</span>; <span class="comment">% Rural Interstate highways</span>
+isIU = isI &amp; ~isIR;          <span class="comment">% Urban Interstate highways</span>
+isR = s.Urban == <span class="string">' '</span> &amp; ~isI; <span class="comment">% Rural non-Interstate roads</span>
+isU = ~isI &amp; ~isR;           <span class="comment">% Urban non-Interstate roads</span>
+</pre><h2 id="10">Plot roads</h2><pre class="codeinput">makemap(XY2,0.03)  <span class="comment">% 3% expansion</span>
+h = [];  <span class="comment">% Keep handle to each plot for legend</span>
+h = [h pplot(IJD(isR,:),XY2,<span class="string">'r-'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Rural Roads'</span>)];
+h = [h pplot(IJD(isU,:),XY2,<span class="string">'k-'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Urban Roads'</span>)];
+h = [h pplot(IJD(isI,:),XY2,<span class="string">'c-'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Interstate Roads'</span>)];
+</pre><img vspace="5" hspace="5" src="Exam2S19_KimiaVahdat_03.png" alt=""> <h2 id="11">Add connector roads from cities to road network</h2><pre class="codeinput">[IJD11,IJD12,IJD22] = addconnector(XY,XY2,IJD);
+h = [h pplot(IJD12,[XY; XY2],<span class="string">'b-'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Connector Roads'</span>)];
+h = [h pplot(XY,<span class="string">'g.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Cities'</span>)];
+</pre><img vspace="5" hspace="5" src="Exam2S19_KimiaVahdat_04.png" alt=""> <h2 id="12">Convert road distances to travel times (needs to be after ADDCONNECTOR)</h2><pre class="codeinput">v.IR = 75;  <span class="comment">% Rural Interstate highways average speed (mph)</span>
+v.IU = 65;  <span class="comment">% Urban Interstate highways average speed (mph)</span>
+v.R = 50;   <span class="comment">% Rural non-Interstate roads average speed (mph)</span>
+v.U = 25;   <span class="comment">% Urban non-Interstate roads average speed (mph)</span>
+v.C = 20;   <span class="comment">% Facility to road connector average speed (mph)</span>
+
+IJT = IJD;
+IJT(isIR,3) = IJD(isIR,3)/v.IR;
+IJT(isIU,3) = IJD(isIU,3)/v.IU;
+IJT(isR,3) = IJD(isR,3)/v.R;
+IJT(isU,3) = IJD(isU,3)/v.U;
+
+IJT22 = IJD22;                <span class="comment">% road to road</span>
+IJT22(:,3) = IJT(:,3);
+IJT12 = IJD12;                <span class="comment">% facility to road</span>
+IJT12(:,3) = IJD12(:,3)/v.C;  <span class="comment">% (IJD11 facility to facility arcs ignored)</span>
+</pre><h2 id="13">Shortest time routes</h2><pre class="codeinput">n = size(XY,1);
+[T,P] = dijk(list2adj([IJT12; IJT22]),1:n,1:n);
+</pre><h2 id="14">Distance of shortest time route</h2><pre class="codeinput">W = list2adj([IJD12; IJD22]);
+D = zeros(n);
+<span class="keyword">for</span> i = 1:n
+   <span class="keyword">for</span> j = 1:n
+      D(i,j) = locTC(pred2path(P,i,j),W);
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2 id="15">Adding constraint</h2><p>defined a new function myrteTC</p><pre class="codeinput">maxdist = 200;
+</pre><h2 id="16">Construct &amp; improve routes:</h2><pre class="codeinput">rTDh = @(rte) myrteTC(rte,sh,tr,maxdist,T,D);
+ph = @(rte) plotshmt(sh,XY,rte,tr);
+IJS = pairwisesavings(rTDh,sh);
+r = twoopt(savings(rTDh,sh,IJS,true),rTDh,true);
+</pre><pre class="codeoutput">SAVINGS:
+3.825518: Make Rte 1 using 11 and 25
+6.828794: Make Rte 2 using 39 and 42
+7.310591: Add 17 to Rte 2
+7.525103: Add 44 to Rte 2
+10.305727: Make Rte 3 using 2 and 21
+10.597899: Add 3 to Rte 2
+11.028536: Add 9 to Rte 3
+12.831425: Make Rte 4 using 16 and 23
+13.125143: Add 18 to Rte 2
+12.324844: Combine Rte 4 to Rte 3
+12.758909: Add 41 to Rte 3
+14.715519: Make Rte 5 using 7 and 24
+14.876130: Add 27 to Rte 5
+16.320763: Make Rte 6 using 14 and 34
+15.074701: Combine Rte 5 to Rte 3
+15.289915: Add 28 to Rte 2
+17.599604: Make Rte 7 using 6 and 46
+19.075542: Make Rte 8 using 8 and 33
+19.353993: Add 36 to Rte 7
+20.103558: Add 4 to Rte 7
+19.349629: Combine Rte 6 to Rte 7
+20.755487: Make Rte 9 using 38 and 43
+21.354348: Add 40 to Rte 7
+23.085243: Make Rte 10 using 1 and 19
+23.262373: Add 22 to Rte 10
+24.624611: Make Rte 11 using 30 and 45
+26.266909: Make Rte 12 using 5 and 50
+27.270491: Make Rte 13 using 12 and 47
+27.496896: Add 10 to Rte 13
+27.749640: Add 29 to Rte 9
+28.048053: Add 26 to Rte 8
+27.093033: Combine Rte 8 to Rte 1
+27.372507: Add 13 to Rte 12
+26.779998: Combine Rte 11 to Rte 13
+27.108299: Add 48 to Rte 1
+27.548529: Add 49 to Rte 10
+27.039390: Combine Rte 10 to Rte 12
+27.200678: Add 35 to Rte 12
+26.701115: Combine Rte 13 to Rte 9
+27.024325: Add 37 to Rte 9
+27.320106: Add 31 to Rte 9
+27.646747: Add 32 to Rte 9
+27.805019: Add 15 to Rte 12
+28.024400: Add 20 to Rte 12
+
+TWOOPT:
+28.024400: 1: 48 11 25 26 33 8 33 25 11 8 26 48 
+28.024400: 2: 28 18 3 44 17 39 42 42 39 17 3 44 18 28 
+27.923375: 2: 28 18 3 44 17 39 42 3 17 39 42 44 18 28 
+27.919375: 2: 28 18 3 44 17 39 42 44 42 39 17 3 18 28 
+27.913394: 2: 28 18 3 44 17 39 42 18 3 17 39 42 44 28 
+27.913394: 3: 7 24 27 41 16 23 9 2 21 2 41 16 23 21 9 7 24 27 
+27.829836: 3: 7 24 27 41 16 23 9 2 21 23 16 41 2 21 9 7 24 27 
+27.177685: 3: 7 24 27 41 16 23 9 21 2 41 16 23 21 2 9 7 24 27 
+27.177685: 4: 40 14 34 4 36 6 46 6 14 34 40 4 46 36 
+27.116160: 4: 36 46 4 40 34 14 6 46 6 36 4 34 14 40 
+26.975545: 4: 36 46 4 40 34 14 6 6 46 36 4 34 14 40 
+26.677596: 4: 36 46 4 40 34 14 6 36 46 6 4 34 14 40 
+26.677596: 5: 32 31 37 38 43 29 30 45 10 12 47 12 47 10 32 30 45 38 43 29 37 31 
+26.486925: 5: 32 31 37 38 43 29 30 45 10 12 47 32 10 47 12 30 45 38 43 29 37 31 
+26.486925: 6: 20 15 35 50 5 13 49 22 1 19 1 19 22 35 13 50 5 49 15 20 
+26.429580: 6: 20 15 35 50 5 13 49 22 19 1 19 1 22 35 13 50 5 49 15 20 
+26.315734: 6: 20 15 35 50 5 13 49 22 19 1 35 22 1 19 13 50 5 49 15 20 
+26.305588: 6: 20 15 35 50 5 13 49 22 19 1 15 49 5 50 13 19 1 22 35 20 
+26.305588: 6: 20 15 35 50 5 13 49 22 19 1 20 35 22 1 19 13 50 5 49 15 
+26.220541: 6: 20 15 35 50 5 13 49 22 19 1 20 35 22 1 19 49 5 50 13 15 
+26.169772: 6: 20 15 35 50 5 13 49 22 19 1 20 35 22 1 19 49 13 50 5 15 
+26.169772: 6: 20 15 35 50 5 13 49 22 19 1 15 5 50 13 49 19 1 22 35 20 
+26.154661: 6: 20 15 35 50 5 13 49 22 19 1 15 50 5 13 49 19 1 22 35 20 
+26.154661: 6: 20 15 35 50 5 13 49 22 19 1 20 35 22 1 19 49 13 5 50 15 
+
+</pre><h2 id="17">Add any single-shipment routes</h2><pre class="codeinput">[r,~,Time] = sh2rte(sh,r,rTDh);
+</pre><h2 id="18">Plot Routes</h2><pre class="codeinput">plotshmt(sh,XY,r,tr)
+pplot(XY(1,:),<span class="string">'ks'</span>)
+</pre><img vspace="5" hspace="5" src="Exam2S19_KimiaVahdat_05.png" alt=""> <h2 id="19">Route time, packages, distance</h2><pre class="codeinput">wt = [sh.q];
+Pkg = cellfun(@(r)sum(wt(rte2idx(r))),r);
+distance = rteTC(r,sh,D,tr);
+vdisp(<span class="string">'Time,Pkg,distance'</span>)
+</pre><pre class="codeoutput"> 
+ :  Time  Pkg  distance
+-:---------------------
+1:  4.97   11   198.92 
+2:  4.39   19   188.94 
+3:  4.78   21   171.95 
+4:  4.13   11   159.76 
+5:  3.91   20   115.46 
+6:  3.97   17   107.66 
+</pre><h2 id="20">Display route output structure</h2><p>to get time windows output too I added the time constraint here to tr</p><pre class="codeinput">tr=vec2struct(tr,<span class="string">'tbmin'</span>,8,<span class="string">'tbmax'</span>,17,<span class="string">'temin'</span>,8,<span class="string">'temax'</span>,17);
+[TC,Xflg,out] = rteTC(r,sh,T,tr);
+</pre><h2 id="21">Gant chart</h2><pre class="codeinput">b = arrayfun(@(x) (x.Start(1)),out); b = b(:);
+e = arrayfun(@(x) (x.Depart(end)),out); e = e(:);
+combine=[0,0];
+<span class="keyword">for</span> j=1:(length(r)-1)
+    <span class="keyword">for</span> i=j+1:length(r)
+    <span class="keyword">if</span>(Time(i)+Time(j)+1&lt;=9)
+        combine=[combine;[j,i]];
+    <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+combine
+<span class="comment">% we can combine only rout 5 and 6</span>
+<span class="comment">% creating new beginning and end time</span>
+b(6)=e(5)+1;
+e(6)=b(6)+Time(6);
+<span class="comment">% therefore we need 5 vans</span>
+mdisp([b e])
+figure
+gantt([b e])
+routeNum=[1:5 5]';
+vdisp(<span class="string">'Time,Pkg,distance,b,e,routeNum'</span>)
+</pre><pre class="codeoutput">
+combine =
+
+     0     0
+     5     6
+
+ 
+ :    1      2  
+-:--------------
+1:   8.00  12.97
+2:   8.00  12.39
+3:   8.00  12.78
+4:   8.00  12.13
+5:   8.00  11.91
+6:  12.91  16.88
+ 
+ :  Time  Pkg  distance    b      e    routeNum
+-:---------------------------------------------
+1:  4.97   11   198.92    8.00  12.97      1   
+2:  4.39   19   188.94    8.00  12.39      2   
+3:  4.78   21   171.95    8.00  12.78      3   
+4:  4.13   11   159.76    8.00  12.13      4   
+5:  3.91   20   115.46    8.00  11.91      5   
+6:  3.97   17   107.66   12.91  16.88      5   
+</pre><img vspace="5" hspace="5" src="Exam2S19_KimiaVahdat_06.png" alt=""> <h2 id="22">Question 2-Second Approach</h2><h2 id="23">Adding constraint</h2><p>defined a new function myrteTC2</p><pre class="codeinput">XY=[DC_XY;C_XY];
+b=1; e=[2:size(XY,1)];
+tr=struct(<span class="string">'b'</span>,b,<span class="string">'e'</span>,b,<span class="string">'Kwt'</span>,40);
+sh = vec2struct(<span class="string">'b'</span>,b,<span class="string">'e'</span>,e,<span class="string">'q'</span>,q,<span class="string">'tU'</span>,2/60);
+maxdist = 200;
+</pre><h2 id="24">Construct &amp; improve routes:</h2><pre class="codeinput">rTDh = @(rte) myrteTC2(rte,sh,tr,maxdist,T,D);
+ph = @(rte) plotshmt(sh,XY,rte,tr);
+IJS = pairwisesavings(rTDh,sh);
+r = twoopt(savings(rTDh,sh,IJS,true),rTDh,true);
+</pre><pre class="codeoutput">SAVINGS:
+3.825518: Make Rte 1 using 11 and 25
+6.828794: Make Rte 2 using 39 and 42
+7.310591: Add 17 to Rte 2
+7.525103: Add 44 to Rte 2
+10.305727: Make Rte 3 using 2 and 21
+10.597899: Add 3 to Rte 2
+11.028536: Add 9 to Rte 3
+12.831425: Make Rte 4 using 16 and 23
+14.788036: Make Rte 5 using 7 and 24
+14.948647: Add 27 to Rte 5
+16.393279: Make Rte 6 using 14 and 34
+16.845372: Add 41 to Rte 4
+19.155061: Make Rte 7 using 6 and 46
+21.039271: Make Rte 8 using 18 and 28
+19.946175: Combine Rte 8 to Rte 6
+21.422114: Make Rte 9 using 8 and 33
+21.700565: Add 36 to Rte 7
+22.119280: Add 50 to Rte 5
+21.490390: Combine Rte 9 to Rte 5
+22.239955: Add 4 to Rte 7
+23.645814: Make Rte 10 using 38 and 43
+22.740264: Combine Rte 10 to Rte 7
+24.471159: Make Rte 11 using 1 and 19
+24.648289: Add 22 to Rte 11
+24.935694: Add 5 to Rte 3
+26.297933: Make Rte 12 using 30 and 45
+25.577731: Combine Rte 12 to Rte 6
+26.119140: Add 40 to Rte 6
+27.122722: Make Rte 13 using 12 and 47
+27.506390: Add 26 to Rte 5
+27.732795: Add 10 to Rte 13
+26.993088: Combine Rte 11 to Rte 4
+27.257450: Add 13 to Rte 3
+27.637242: Add 49 to Rte 4
+28.899139: Make Rte 14 using 29 and 48
+29.001350: Add 35 to Rte 4
+29.324560: Add 37 to Rte 14
+29.620341: Add 31 to Rte 14
+29.973559: Add 32 to Rte 6
+29.874273: Combine Rte 14 to Rte 13
+30.032545: Add 15 to Rte 3
+30.241780: Add 20 to Rte 6
+
+TWOOPT:
+30.241780: 1: 25 11 25 11 
+30.241780: 2: 3 44 17 39 42 42 39 17 3 44 
+30.140754: 2: 3 44 17 39 42 3 17 39 42 44 
+30.140754: 3: 15 13 5 9 2 21 2 21 9 5 13 15 
+29.988781: 3: 15 13 5 9 21 2 21 2 9 5 13 15 
+29.901760: 3: 15 13 5 9 21 2 9 2 21 5 13 15 
+29.901760: 4: 35 49 19 1 22 41 23 16 23 16 41 49 19 1 22 35 
+29.859760: 4: 35 49 19 1 22 41 16 23 16 23 41 49 19 1 22 35 
+29.743268: 4: 35 49 19 1 22 41 16 23 49 41 23 16 19 1 22 35 
+29.743268: 4: 35 49 19 1 22 41 16 23 35 22 1 19 16 23 41 49 
+29.743268: 5: 26 8 33 50 27 24 7 24 7 8 33 26 27 50 
+29.731836: 5: 50 27 26 33 8 7 24 7 24 27 50 33 8 26 
+29.304482: 5: 50 27 26 33 8 7 24 50 27 24 7 33 8 26 
+29.205294: 5: 50 27 26 33 8 7 24 50 27 24 7 8 33 26 
+29.205294: 6: 20 32 40 30 45 14 34 28 18 28 18 14 34 30 45 40 32 20 
+29.014840: 6: 20 32 40 30 45 14 34 28 18 40 45 30 34 14 18 28 32 20 
+29.014840: 7: 38 43 4 36 6 46 6 4 46 36 38 43 
+28.783874: 7: 38 43 4 36 6 46 4 6 46 36 38 43 
+28.783874: 8: 47 12 10 31 37 48 29 48 29 37 31 12 47 10 
+
+</pre><h2 id="25">Add any single-shipment routes</h2><pre class="codeinput">[r,~,Time] = sh2rte(sh,r,rTDh);
+</pre><h2 id="26">Plot Routes</h2><pre class="codeinput">plotshmt(sh,XY,r,tr)
+pplot(XY(1,:),<span class="string">'ks'</span>)
+</pre><img vspace="5" hspace="5" src="Exam2S19_KimiaVahdat_07.png" alt=""> <h2 id="27">Route time, packages, distance</h2><pre class="codeinput">wt = [sh.q];
+Pkg = cellfun(@(r)sum(wt(rte2idx(r))),r);
+distance = rteTC(r,sh,D,tr);
+vdisp(<span class="string">'Time,Pkg,distance'</span>)
+</pre><pre class="codeoutput"> 
+ :  Time  Pkg  distance
+-:---------------------
+1:  3.83    3   199.98 
+2:  3.89   13   183.97 
+3:  3.68   14   125.99 
+4:  3.75   14   132.81 
+5:  3.23   15   105.20 
+6:  3.79   15   131.66 
+7:  3.61   11   139.42 
+8:  3.01   14   103.00 
+</pre><h2 id="28">Display route output structure</h2><p>to get time windows output too I added the time constraint here to tr</p><pre class="codeinput">tr=vec2struct(tr,<span class="string">'tbmin'</span>,8,<span class="string">'tbmax'</span>,17,<span class="string">'temin'</span>,8,<span class="string">'temax'</span>,17);
+[TC,Xflg,out] = rteTC(r,sh,T,tr);
+</pre><h2 id="29">Gant chart</h2><pre class="codeinput">b = arrayfun(@(x) (x.Start(1)),out); b = b(:);
+e = arrayfun(@(x) (x.Depart(end)),out); e = e(:);
+<span class="comment">% we can combine each combination of 2 routes together</span>
+<span class="comment">% creating new beginning and end time for each coupled routes</span>
+i=1;
+<span class="keyword">while</span> i&lt;length(r)
+b(i+1)=e(i)+1;
+e(i+1)=b(i+1)+Time(i+1);
+i=i+2;
+<span class="keyword">end</span>
+mdisp([b e])
+figure
+gantt([b e])
+routeNum=[1 1 2 2 3 3 4 4]';
+<span class="comment">% final result</span>
+vdisp(<span class="string">'Time,Pkg,distance,b,e,routeNum'</span>)
+</pre><pre class="codeoutput"> 
+ :    1      2  
+-:--------------
+1:   8.00  11.83
+2:  12.83  16.72
+3:   8.00  11.68
+4:  12.68  16.43
+5:   8.00  11.23
+6:  12.23  16.02
+7:   8.00  11.61
+8:  12.61  15.62
+ 
+ :  Time  Pkg  distance    b      e    routeNum
+-:---------------------------------------------
+1:  3.83    3   199.98    8.00  11.83      1   
+2:  3.89   13   183.97   12.83  16.72      1   
+3:  3.68   14   125.99    8.00  11.68      2   
+4:  3.75   14   132.81   12.68  16.43      2   
+5:  3.23   15   105.20    8.00  11.23      3   
+6:  3.79   15   131.66   12.23  16.02      3   
+7:  3.61   11   139.42    8.00  11.61      4   
+8:  3.01   14   103.00   12.61  15.62      4   
+</pre><img vspace="5" hspace="5" src="Exam2S19_KimiaVahdat_08.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Exam 2
+% Kimia Vahdat 200262784
+%% Question 1
+%% Reading data
+fn='Exam2DataS19.xlsx';
+Prod = table2struct(readtable(fn,'sheet','P1-Data'));
+% need to fit  regression model to get fixed cost and variable cost of
+% production
+x = [Prod.Production]'; % ton/week
+y = [Prod.Costs]'*1000; % $/week
+yest = @(x,p) p(1) + p(2)*x;
+fh = @(p) sum((y - yest(x,p)).^2);
+ab = fminsearch(fh,[0 1])
+k = ab(1) % fixed cost of production (only happens if we have production in a period)
+Cp = ab(2) % variable cost of production
+plot(x,y,'r.')
+hold on, fplot(@(x) yest(x,ab),[0 max(x)],'k-'), hold off
+Dem=table2struct(readtable(fn,'sheet','P1-Demand'));
+D=[Dem.Demand]'; % demand ton/week
+h = 0.05/(12*4)+0.06/(12*4)+0.5/4;
+Ci = cumsum(Cp,1)*h;      % inventory cost of product 1 for stage 1 ($/ton)
+K=60; % Production capacity ton/week
+yinit = 13;           % initial inventory (ton)
+ycap=120;           % incentory capacity
+yfinal = 13;     % final inventory (ton)
+T=13; % number of periods
+%% Create MILP model
+Cp = reshape(repmat(Cp,[T 1]),1,T)     % create 1 x T array 
+Ci = reshape(repmat(Ci,[T+1 1]),1,T+1) % create 1 x (T+1) array
+Ci(:,1) = 0   % intital inventory cost already accounted for last period
+k = reshape(repmat(k,[T 1]),1,T)     % create 1 x T  array
+mp = Milp('PPlan');
+mp.addobj('min',Cp,Ci,k)     
+   for t = 1:T
+      mp.addcstr({t},{[1 -1],{[t t+1]}},0,'=',D(t))
+      mp.addcstr({t},0,'<=',{K,{t}})
+   end
+mp.addlb(0,horzcat(yinit,zeros(1,T-1),yfinal),0)
+mp.addub(Inf,horzcat(yinit,repmat(ycap,1,T-1),yfinal),1)
+mp.addctype('C','C','B')
+%% Display contraint matrix
+spy(mp.Model.A),shg
+%% Solve using Gurobi
+clear params
+model = mp.milp2gb
+params.outputflag = 1;
+result = gurobi(model, params);
+x = mp.namesolution(result.x)
+TC = result.objval
+%% Report results
+Fp = x.Cp; mdisp(Fp)
+Fi = x.Ci; mdisp(Fi)
+Fk= x.k; mdisp(Fk)
+D=D';
+mdisp(D)
+%% Question 2- First Approach
+clear all
+close all
+fn='Exam2DataS19.xlsx';
+DC= table2struct(readtable(fn,'sheet','P2-DC'));
+Cust=table2struct(readtable(fn,'sheet','P2-Customers'));
+DC_XY=[DC.Lon,DC.Lat];
+C_XY=[Cust.Lon; Cust.Lat]';
+q=[Cust.Pkg];
+XY=[DC_XY;C_XY];
+b=1; e=[2:size(XY,1)];
+tr=struct('b',b,'e',b,'Kwt',40);
+sh = vec2struct('b',b,'e',e,'q',q,'tU',2/60);
+sdisp(sh)
+%% Get road network
+expansionAroundXY = 0.1;
+[XY2,IJD,isXY,isIJD] = subgraph(usrdnode('XY'),...
+   isinrect(usrdnode('XY'),boundrect(XY,expansionAroundXY)),...
+   usrdlink('IJD'));
+%% Label type of road
+s = usrdlink(isIJD);
+isI = s.Type == 'I';         % Interstate highways
+isIR = isI & s.Urban == ' '; % Rural Interstate highways
+isIU = isI & ~isIR;          % Urban Interstate highways
+isR = s.Urban == ' ' & ~isI; % Rural non-Interstate roads
+isU = ~isI & ~isR;           % Urban non-Interstate roads
+%% Plot roads
+makemap(XY2,0.03)  % 3% expansion
+h = [];  % Keep handle to each plot for legend
+h = [h pplot(IJD(isR,:),XY2,'r-','DisplayName','Rural Roads')];
+h = [h pplot(IJD(isU,:),XY2,'k-','DisplayName','Urban Roads')];
+h = [h pplot(IJD(isI,:),XY2,'c-','DisplayName','Interstate Roads')];
+%% Add connector roads from cities to road network
+[IJD11,IJD12,IJD22] = addconnector(XY,XY2,IJD);
+h = [h pplot(IJD12,[XY; XY2],'b-','DisplayName','Connector Roads')];
+h = [h pplot(XY,'g.','DisplayName','Cities')];
+%% Convert road distances to travel times (needs to be after ADDCONNECTOR)
+v.IR = 75;  % Rural Interstate highways average speed (mph)
+v.IU = 65;  % Urban Interstate highways average speed (mph)
+v.R = 50;   % Rural non-Interstate roads average speed (mph)
+v.U = 25;   % Urban non-Interstate roads average speed (mph)
+v.C = 20;   % Facility to road connector average speed (mph)
+
+IJT = IJD;
+IJT(isIR,3) = IJD(isIR,3)/v.IR;
+IJT(isIU,3) = IJD(isIU,3)/v.IU;
+IJT(isR,3) = IJD(isR,3)/v.R;
+IJT(isU,3) = IJD(isU,3)/v.U;
+
+IJT22 = IJD22;                % road to road
+IJT22(:,3) = IJT(:,3);
+IJT12 = IJD12;                % facility to road
+IJT12(:,3) = IJD12(:,3)/v.C;  % (IJD11 facility to facility arcs ignored)
+%% Shortest time routes
+n = size(XY,1);
+[T,P] = dijk(list2adj([IJT12; IJT22]),1:n,1:n);
+%% Distance of shortest time route
+W = list2adj([IJD12; IJD22]);
+D = zeros(n);  
+for i = 1:n
+   for j = 1:n
+      D(i,j) = locTC(pred2path(P,i,j),W);
+   end
+end
+%% Adding constraint
+% defined a new function myrteTC
+maxdist = 200;
+%% Construct & improve routes:
+rTDh = @(rte) myrteTC(rte,sh,tr,maxdist,T,D);
+ph = @(rte) plotshmt(sh,XY,rte,tr);
+IJS = pairwisesavings(rTDh,sh);
+r = twoopt(savings(rTDh,sh,IJS,true),rTDh,true);
+%% Add any single-shipment routes
+[r,~,Time] = sh2rte(sh,r,rTDh);
+%% Plot Routes
+plotshmt(sh,XY,r,tr)
+pplot(XY(1,:),'ks')
+%% Route time, packages, distance
+wt = [sh.q];
+Pkg = cellfun(@(r)sum(wt(rte2idx(r))),r);
+distance = rteTC(r,sh,D,tr);
+vdisp('Time,Pkg,distance')
+%% Display route output structure
+% to get time windows output too I added the time constraint here to tr
+tr=vec2struct(tr,'tbmin',8,'tbmax',17,'temin',8,'temax',17);
+[TC,Xflg,out] = rteTC(r,sh,T,tr);
+%% Gant chart
+b = arrayfun(@(x) (x.Start(1)),out); b = b(:);
+e = arrayfun(@(x) (x.Depart(end)),out); e = e(:);
+combine=[0,0];
+for j=1:(length(r)-1)
+    for i=j+1:length(r)
+    if(Time(i)+Time(j)+1<=9)
+        combine=[combine;[j,i]];
+    end 
+    end
+end
+combine
+% we can combine only rout 5 and 6
+% creating new beginning and end time
+b(6)=e(5)+1;
+e(6)=b(6)+Time(6);
+% therefore we need 5 vans 
+mdisp([b e])
+figure
+gantt([b e])
+routeNum=[1:5 5]';
+vdisp('Time,Pkg,distance,b,e,routeNum')
+%% Question 2-Second Approach
+%% Adding constraint
+% defined a new function myrteTC2
+XY=[DC_XY;C_XY];
+b=1; e=[2:size(XY,1)];
+tr=struct('b',b,'e',b,'Kwt',40);
+sh = vec2struct('b',b,'e',e,'q',q,'tU',2/60);
+maxdist = 200;
+%% Construct & improve routes:
+rTDh = @(rte) myrteTC2(rte,sh,tr,maxdist,T,D);
+ph = @(rte) plotshmt(sh,XY,rte,tr);
+IJS = pairwisesavings(rTDh,sh);
+r = twoopt(savings(rTDh,sh,IJS,true),rTDh,true);
+%% Add any single-shipment routes
+[r,~,Time] = sh2rte(sh,r,rTDh);
+%% Plot Routes
+plotshmt(sh,XY,r,tr)
+pplot(XY(1,:),'ks')
+%% Route time, packages, distance
+wt = [sh.q];
+Pkg = cellfun(@(r)sum(wt(rte2idx(r))),r);
+distance = rteTC(r,sh,D,tr);
+vdisp('Time,Pkg,distance')
+%% Display route output structure
+% to get time windows output too I added the time constraint here to tr
+tr=vec2struct(tr,'tbmin',8,'tbmax',17,'temin',8,'temax',17);
+[TC,Xflg,out] = rteTC(r,sh,T,tr);
+
+%% Gant chart
+b = arrayfun(@(x) (x.Start(1)),out); b = b(:);
+e = arrayfun(@(x) (x.Depart(end)),out); e = e(:);
+% we can combine each combination of 2 routes together
+% creating new beginning and end time for each coupled routes
+i=1;
+while i<length(r)
+b(i+1)=e(i)+1;
+e(i+1)=b(i+1)+Time(i+1);
+i=i+2;
+end
+mdisp([b e])
+figure
+gantt([b e])
+routeNum=[1 1 2 2 3 3 4 4]';
+% final result
+vdisp('Time,Pkg,distance,b,e,routeNum')
+##### SOURCE END #####
+--></body></html>
