@@ -1,0 +1,109 @@
+---
+title: "Midterm 2"
+author: "Kimia Vahdat"
+date: "April 12, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 4 part a
+
+
+```{r }
+data<-read.csv("judges_and_immigration.txt",sep = " ",header = T)
+data <- within(data, JudgeName <- relevel(JudgeName, ref = "Iacobucci"))
+attach(data)
+model1<-glm(GrantedAppeal~JudgeName,family= binomial(link = logit))
+summary(model1)
+link<-predict(model1,newdata = list(JudgeName="Desjardins"),type = "link")
+Prob<-exp(link)/(exp(link)+1)
+Prob
+response<-predict(model1,newdata = list(JudgeName="Desjardins"),type = "response")
+response
+# They are the same! 
+null<-model1$null.deviance
+full<-model1$deviance
+test<-((null-full)/(model1$df.null-model1$df.residual))/(full/model1$df.residual)
+# p-value
+pf(test,model1$df.null-model1$df.residual,model1$df.residual,lower.tail = F)
+```
+
+## Question 4 Part b
+
+```{r}
+model2<-glm(GrantedAppeal~JudgeName+Merit+Language+SuccessRate+City,family= binomial(link = logit))
+summary(model2)
+null.model<-glm(GrantedAppeal~Merit+Language+SuccessRate+City,family= binomial(link = logit))
+null<-null.model$deviance
+full<-model2$deviance
+## Hypothesis testing
+test<-((null-full)/(null.model$df.residual-model2$df.residual))/(full/model2$df.residual)
+# p-value
+pf(test,null.model$df.residual-model2$df.residual,model2$df.residual,lower.tail = F)
+```
+
+## Question 4 Part c
+
+```{r}
+# comparing deviance of two models
+model2$dev
+model1$deviance 
+## model 2 has smaller deviance
+# Comparing aic
+model2$aic
+model1$aic
+# model 2 has less aic
+## Checking if two models are the same?
+library(lmtest)
+lrtest(model1,model2)
+```
+
+## Question 5 Part a
+```{r}
+q5<-read.csv("Question5.csv",sep=",",header = F)
+#install.packages("devtools")
+library(devtools)
+####################### Part a
+# svd approach
+zvars <- scale(q5, center = T, scale = F)
+z.svd <- svd(zvars)
+plot(z.svd$d, xlab = "Column", ylab = "Singular value", pch = 19)
+f<-0
+i<-0
+while(f<0.95){
+    i<-i+1
+  f<-sum(z.svd$d[1:i]^2)/sum(z.svd$d^2)
+
+}
+# number of variables is i-1=12
+k=i-1
+k
+## PC-Scores
+sigma<-matrix(0,k,k)
+diag(sigma)<-z.svd$d[1:k]
+Scores <- z.svd$u[,1:k] %*% sigma
+head(Scores)
+```
+## Question 5 Part b
+```{r}
+# eigen decomposition
+w <- t(zvars)%*%zvars
+a <- eigen(w)$values
+avec<-eigen(w)$vectors
+f<-0
+i<-0
+while(f<0.95){
+  i<-i+1  
+  f<-sum(a[1:i])/sum(a)
+
+}
+# number of variables is i-1=12
+k=i-1
+k
+# PC-Scores
+pca.scores<- zvars %*% avec[,1:k]
+head(pca.scores)
+```
